@@ -2,7 +2,7 @@
 
 ## Project Goals
 
-The aim of this project is to develop a web-based application that recommends food recipes based on the ingredients provided by the user. This application leverages the Tavily API to fetch recipes and integrates several agents to provide additional functionalities like feedback and nutrient value analysis.
+The aim of this project is to develop a web-based application that recommends food recipes based on the ingredients provided by the user. This application leverages the Tavily API and Langchain to fetch recipes and integrates several agents to provide additional functionalities like feedback and nutrient value analysis.
 
 ## Architecture
 
