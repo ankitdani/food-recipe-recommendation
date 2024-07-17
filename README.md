@@ -12,6 +12,8 @@ pip3 install -qU langchain-openai
 pip3 install requests
 ```
 
+Add your OPENAI API KEY in the app.py file.
+
 To run the application:
 
 ```
