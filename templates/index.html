@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenTavRecipe</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      header {
+        background-color: #ff6347;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        margin: 0;
+        font-size: 2.5em;
+      }
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      .recipe-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+        border-radius: 8px;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: none;
+        border-top: 1px solid #ccc;
+      }
+      ul,
+      ol {
+        padding-left: 20px;
+      }
+      .instructions ul {
+        list-style-type: disc;
+        padding-left: 20px;
+      }
+      .recipes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .recipe-card,
+      .ingredient-card,
+      .instruction-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #333;
+        font-size: 1.5em;
+        margin-top: 0;
+      }
+      h3 {
+        color: #ff6347;
+        font-size: 1.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>OpenTavRecipe</h1>
+    </header>
+    <div class="container">
+      <h2>Recipe Recommendations</h2>
+      {% if not recipes %}
+      <form method="POST">
+        <label for="diet">Dietary Restrictions:</label>
+        <input type="text" id="diet" name="diet" /><br /><br />
+        <label for="cuisine">Preferred Cuisine:</label>
+        <input type="text" id="cuisine" name="cuisine" /><br /><br />
+        <label for="ingredients">Available Ingredients:</label>
+        <input type="text" id="ingredients" name="ingredients" /><br /><br />
+        <label for="meal_type">Meal Type:</label>
+        <input type="text" id="meal_type" name="meal_type" /><br /><br />
+        <input type="submit" value="Submit" />
+      </form>
+      {% else %}
+      <div>
+        <div class="recipes-grid">
+          {% for recipe in recipes %}
+          <div class="recipe-card">
+            <h3>
+              <a href="{{ recipe.url }}" target="_blank">{{ recipe.title }}</a>
+            </h3>
+            <p>{{ recipe.content }}</p>
+            {% if recipe.image %}
+            <img
+              src="{{ recipe.image }}"
+              alt="Recipe Image"
+              class="recipe-image"
+            />
+            {% else %}
+            <p>No image available</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div>
+        {% if nutrient_values %} {% for ingredient, nutrient_info in
+        nutrient_values.items() %}
+        <div>
+          <ul>
+            {% for food in nutrient_info.foods %}
+            <li>
+              {{ food.food_name }}: {{ food.serving_qty }} {{ food.serving_unit
+              }} ({{ food.serving_weight_grams }}g) - Calories: {{
+              food.nf_calories }}kcal
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %} {% else %}
+        <p>No nutrient values found.</p>
+        {% endif %}
+      </div>
+      {% if feedback %}
+      <div>
+        <h2>Recommended Recipe</h2>
+        <div>
+          <h3>{{ feedback.title }}</h3>
+          <div class="recipes-grid">
+            <div class="ingredient-card">
+              <p><strong>Ingredients:</strong></p>
+              <ul>
+                {% for ingredient in feedback.ingredients %}
+                <li>{{ ingredient }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="instruction-card">
+              <p><strong>Instructions:</strong></p>
+              <div class="instructions">
+                <ul>
+                  {% for step in feedback.instructions %}
+                  <li>{{ step }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %} {% endif %}
+    </div>
+  </body>
+</html>
